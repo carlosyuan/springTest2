@@ -1,0 +1,16 @@
+
+<html>
+<head>
+    <title>$!page_title</title>
+    #parse("default/header.vm")
+</head>
+<body>
+
+<div>
+    <h1>layout page</h1>
+    $screen_content
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+
+    <context:component-scan base-package="com.carlos.core"/>
+
+     <!--&lt;!&ndash;配置视图解析器 如何把handler 方法返回值解析为实际的物理视图 &ndash;&gt;-->
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name = "prefix" value="/WEB-INF/templates/"></property>-->
+        <!--<property name = "suffix" value = ".jsp"></property>-->
+    <!--</bean>-->
+
+    <!-- 对静态资源文件的访问  方案）-->
+    <mvc:default-servlet-handler/>
+    <!-- 对静态资源文件的访问  方案-->
+    <mvc:resources mapping="/js/**" location="templates/js"/>
+
+    <mvc:annotation-driven/>
+
+    <!--jsp视图解析器-->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="order" value="1"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/templates/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!-- velocity环境配置 -->
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <!-- velocity配置文件路径  或者直接用velocityProperties属性 -->
+        <property name="configLocation" value="classpath:velocity.properties"/>
+        <!-- velocity模板路径 -->
+        <property name="resourceLoaderPath" value="/templates/"/>
+        <property name="velocityProperties">
+            <props>
+                <prop  key="input.encoding">UTF-8</prop>
+                <prop  key="output.encoding">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- velocity视图解析器 -->
+    <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="order" value="0"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="cache" value="true"/>
+        <property name="suffix" value=".vm"/>
+        <property name="layoutUrl" value="layout/layout.vm"/>
+        <property name="exposeSpringMacroHelpers" value="true" /><!--是否使用spring对宏定义的支持-->
+        <property name="exposeSessionAttributes" value="true" /><!--是否开放request属性-->
+        <property name="requestContextAttribute" value="request"/><!--request属性引用名称-->
+        <property name="dateToolAttribute" value="dateTool"/>
+        <property name="numberToolAttribute" value="numberTool"/>
+        <property name="viewClass" value="com.carlos.core.velocity.VelocityToolbox2View"/>
+        <!--toolboxConfigLocation 位置只能在webapp下，为什么？-->
+        <property name="toolboxConfigLocation" value="/templates/layout/velocity-toolbox.xml"/>
+    </bean>
+    <mvc:interceptors>
+        <bean class="com.carlos.core.interceptors.FirstInterceptor"/>
+        <!-- 配置拦截器（不）作用的路径 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/emps"/>
+            <bean class="com.carlos.core.interceptors.SecondInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- 多部分文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+</beans>

@@ -1,0 +1,66 @@
+#set($layout="jquerytest.vm")
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("button").click(function(){
+                $("p").hide();
+            });
+        });
+        $(function(){
+            $(".delete").click(function(){
+                alert("class found");
+            });
+        });
+        $(document).ready(function(){
+            $("#btn1").click(function(){
+                alert("Text: " + $("#test").text());
+            });
+            $("#btn2").click(function(){
+                alert("HTML: " + $("#test").html());
+            });
+        });
+        $(document).ready(function(){
+            $("button").click(function(){
+                alert($("#runoob").attr("href"));
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            $("#testJson").click(function(){
+                var url = this.href;
+                var args = {};
+                $.post(url, args, function(data){
+                    for(var i=0; i<data.length; i++){
+                        var id = data[i].id;
+                        var lastName = data[i].lastName;
+                        alert(id + ": " + lastName);
+                    }
+                })
+                return false;
+            })
+        })
+    </script>
+</head>
+
+<body>
+<h2>这是一个标题</h2>
+<p>这是一个段落。</p>
+<p>这是另一个段落。</p>
+<button>点我</button>
+
+<p id="test">这是段落中的 <b>粗体</b> 文本。</p>
+<button id="btn1">显示文本</button>
+<button id="btn2">显示 HTML</button>
+
+<p><a href="http://www.runoob.com" id="runoob">菜鸟教程</a></p>
+<button>显示 href 属性的值</button>
+<a class="delete" href="">Delete</a>
+
+<a href="testJson" id="testJson">testJson</a>
+</body>
+</html>

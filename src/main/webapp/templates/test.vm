@@ -1,0 +1,51 @@
+#set($layout="test.vm")
+
+<html>
+<head>
+    <title>$!page_title</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".delete").click(function(){
+                var href = $(this).attr("href");
+                $("form").attr("action", href).submit();
+                return false;
+            });
+        })
+    </script>
+</head>
+<body>
+<h1>test page</h1>
+
+
+<form action="" method="POST">
+    <input type="hidden" name="_method" value="DELETE"/>
+</form>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Department</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    #foreach($vo in $vos)
+        <tr>
+            <td>$!{vo.employee.id}</td>
+            <td>$!{vo.employee.lastName}</td>
+            <td>$!{vo.employee.email}</td>
+            <td>$!{vo.employee.gender}</td>
+            <td>$!{vo.employee.department.departmentName}</td>
+            <td><a href="emp/$!{vo.employee.id}">Edit</a></td>
+            <td><a class="delete" href="emp/${vo.employee.id}">Delete</a></td>
+        </tr>
+    #end
+</table>
+
+<a href = "emp">add new employee</a><br/>
+</body>
+</html>

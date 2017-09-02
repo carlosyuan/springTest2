@@ -1,0 +1,23 @@
+
+<h1>input page</h1>
+
+<form action="/emp" method="POST">
+    <!-- path 属性对应html表单标签的name属性 -->
+    #if($employee.id)
+        <h2>update page</h2>
+        <input type="hidden" name="_method" value="PUT">
+        <input type="text" name="id" readonly="readonly" value="$employee.id"></input>
+    #end
+    LastName: <input type="text" name="lastName"></input><br>
+    Email:<input type="email" name="email"></input><br>
+    Gender:<input type="radio" name="gender" value="0">female<br>
+            <input type="radio" name="gender" value="1">male<br>
+    Department:
+    <select id ="s1" name="departmentName">
+        <option selected>请选择</option>
+        #foreach ($vo in ${vos})
+            <option value=$vo.department.id>$vo.department.departmentName</option>
+        #end
+    </select><br>
+    <input type="submit" value="Submit" />
+</form>
